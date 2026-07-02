@@ -70,6 +70,7 @@ body {
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
   transition: left 0.25s ease;
 }
@@ -79,6 +80,18 @@ body {
   .top-left-controls.shifted {
     left: 350px;
   }
+}
+
+/* Bottom-right map navigation controls (zoom, layers, fit, locate). */
+.map-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 26px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .control-group {
@@ -230,16 +243,35 @@ body {
   font-weight: 600;
 }
 
-/* Compact close button at the end of the tab row */
-.tab-close {
+/* Back button at the start of the tab row */
+.tab-back {
   flex: 0 0 auto;
-  width: 30px;
-  padding: 9px 0;
-  color: var(--text-muted);
+  width: 34px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 15px;
+  border-right: 1px solid var(--border-light);
 }
 
-.tab-close i {
-  margin-right: 0;
+.tab-back:hover {
+  background: var(--bg-hover);
+}
+
+/* Drawer backdrop — modal close-on-outside-click (mobile only) */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1150;
+  background: rgba(0, 0, 0, 0.35);
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .drawer-backdrop {
+    display: block;
+  }
 }
 
 .tab-close:hover {
@@ -563,6 +595,31 @@ body {
   border-top: 1px solid var(--border-lighter);
 }
 
+/* Collapsible section header (e.g. Display Options) */
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.collapsible-header i {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+/* Group-by + Name-type selects side by side */
+.legend-controls-row {
+  display: flex;
+  gap: 8px;
+}
+
+.legend-controls-row .legend-name-toggle {
+  flex: 1;
+  min-width: 0;
+}
+
 /* Select all / unselect all */
 .legend-select-actions {
   display: flex;
@@ -617,6 +674,13 @@ body {
   margin-left: -4px;
   flex: 1;
   min-width: 0;
+}
+
+.legend-group-swatch {
+  width: 11px;
+  height: 11px;
+  margin-right: 6px;
+  vertical-align: middle;
 }
 
 .legend-group-name:hover {
@@ -820,11 +884,10 @@ body {
   }
 }
 
-/* Weather badge (always-visible, translucent) — sits above the Leaflet
-   attribution in the bottom-right corner. */
+/* Weather badge (always-visible, translucent) — top-right corner. */
 .weather-badge {
   position: absolute;
-  bottom: 26px;
+  top: 10px;
   right: 10px;
   z-index: 1000;
   display: flex;
@@ -846,6 +909,67 @@ body {
 
 .weather-sep {
   color: var(--border);
+}
+
+/* Brand wordmark (translucent pill, bottom-left, above the attribution) */
+.brand-badge {
+  position: absolute;
+  bottom: 26px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(2px);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+  user-select: none;
+}
+
+.brand-badge > i {
+  color: var(--brand);
+  font-size: 18px;
+}
+
+.brand-names {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+/* Both rows justify to the same width (CJK spreads per-character; the shorter
+   English line tracks out to match). */
+.brand-zh,
+.brand-en {
+  font-family: 'BrandFont', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  text-align: justify;
+  text-align-last: justify;
+  text-justify: inter-character;
+}
+
+/* Chinese name is primary (Hong Kong audience): black, top row. */
+.brand-zh {
+  font-size: 16px;
+  color: #000;
+  letter-spacing: 1px;
+}
+
+.brand-en {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+@media (max-width: 480px) {
+  .brand-zh {
+    font-size: 14px;
+  }
+  .brand-en {
+    font-size: 11px;
+  }
 }
 
 /* Measurement colour editor (floating, top-center) */
@@ -1045,8 +1169,8 @@ body {
 }
 
 .viewshed-cone {
-  fill: rgba(44, 95, 45, 0.2);
-  stroke: var(--brand);
+  fill: rgba(255, 140, 0, 0.25);
+  stroke: #ff8c00;
   stroke-width: 2;
 }
 

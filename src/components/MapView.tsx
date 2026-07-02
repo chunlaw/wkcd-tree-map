@@ -40,10 +40,11 @@ export default function MapView() {
     if (!el) return
     mapController.init(el)
 
+    // Marker click just shows the Leaflet popup. Record the selection (so the
+    // Search tab's detail card reflects it if opened) but don't switch tabs —
+    // flipping the drawer away from Filters is disruptive.
     mapController.onSelectTree = (feature) => {
-      const store = useStore.getState()
-      store.setSelectedTree(feature)
-      store.setActiveTab('search')
+      useStore.getState().setSelectedTree(feature)
     }
     mapController.onOpenPhoto = (index) => useStore.getState().openPhoto(index)
     mapController.onViewChange = (center, zoom) => writeUrl(center, zoom)

@@ -1,6 +1,6 @@
 import { useT } from '../useT'
 
-/** Compact, always-visible weather badge (bottom-right, translucent). */
+/** Compact, always-visible weather badge (top-right, translucent). */
 export default function WeatherWidget() {
   const t = useT()
 

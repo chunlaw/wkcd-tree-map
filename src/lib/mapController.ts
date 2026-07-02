@@ -14,6 +14,7 @@ import {
   MAP_MIN_ZOOM,
   MEASURE_COLOR,
   VIEWPOINT_MIN_ZOOM,
+  VIEWSHED_COLOR,
 } from '../config'
 import { translations, type Translation } from '../i18n'
 import { getShortScientificName, markerShapeHtml } from './species'
@@ -324,9 +325,9 @@ class MapController {
     this.clearViewshed()
     const points = viewshedPolygonPoints(lng, lat, rotation)
     this.viewshed = L.polygon(points, {
-      color: BRAND_GREEN,
-      fillColor: BRAND_GREEN,
-      fillOpacity: 0.2,
+      color: VIEWSHED_COLOR,
+      fillColor: VIEWSHED_COLOR,
+      fillOpacity: 0.25,
       weight: 2,
       className: 'viewshed-cone',
     }).addTo(this.map)

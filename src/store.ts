@@ -88,15 +88,20 @@ interface AppState {
 export const useStore = create<AppState>((set, get) => ({
   trees: [],
   viewpoints: [],
-  species: { colors: {}, shapes: {}, chineseNames: {}, counts: {}, order: [] },
+  species: {
+    colors: {},
+    shapes: {},
+    chineseNames: {},
+    counts: {},
+    familyColors: {},
+    order: [],
+  },
   dataLoaded: false,
   loadError: null,
 
   activeTab: 'filters',
-  // Panel open by default on desktop, hidden on mobile (opened via the menu button).
-  panelOpen:
-    typeof window === 'undefined' ||
-    !window.matchMedia('(max-width: 768px)').matches,
+  // Drawer hidden by default (both desktop and mobile); opened via the menu button.
+  panelOpen: false,
 
   showTrees: true,
   showViewpoints: true,

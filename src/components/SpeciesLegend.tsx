@@ -111,15 +111,6 @@ export default function SpeciesLegend({ idPrefix }: { idPrefix: string }) {
 
   return (
     <>
-      <div className="legend-item">
-        <i className="fas fa-tree" style={{ color: '#2c5f2d', marginRight: 8 }} />
-        <span>{t.tree}</span>
-      </div>
-      <div className="legend-item">
-        <i className="fas fa-eye" style={{ color: '#4a90e2', marginRight: 8 }} />
-        <span>{t.photoViewpoint}</span>
-      </div>
-
       <h4 className="legend-section-title">{t.speciesFilter}</h4>
 
       <div className="search-box" style={{ marginBottom: 8 }}>
@@ -132,32 +123,34 @@ export default function SpeciesLegend({ idPrefix }: { idPrefix: string }) {
         />
       </div>
 
-      <div className="legend-name-toggle">
-        <label htmlFor={`${idPrefix}NameType`}>{t.nameType}</label>
-        <select
-          id={`${idPrefix}NameType`}
-          value={legendNameType}
-          onChange={(e) => setLegendNameType(e.target.value as LegendNameType)}
-          aria-label={t.nameType}
-        >
-          <option value="short">{t.nameShort}</option>
-          <option value="full">{t.nameFull}</option>
-          <option value="chinese">{t.nameChinese}</option>
-        </select>
-      </div>
+      <div className="legend-controls-row">
+        <div className="legend-name-toggle">
+          <label htmlFor={`${idPrefix}GroupBy`}>{t.groupBy}</label>
+          <select
+            id={`${idPrefix}GroupBy`}
+            value={groupBy}
+            onChange={(e) => setGroupBy(e.target.value as GroupBy)}
+            aria-label={t.groupBy}
+          >
+            <option value="none">{t.groupNone}</option>
+            <option value="family">{t.groupFamily}</option>
+            <option value="genus">{t.groupGenus}</option>
+          </select>
+        </div>
 
-      <div className="legend-name-toggle">
-        <label htmlFor={`${idPrefix}GroupBy`}>{t.groupBy}</label>
-        <select
-          id={`${idPrefix}GroupBy`}
-          value={groupBy}
-          onChange={(e) => setGroupBy(e.target.value as GroupBy)}
-          aria-label={t.groupBy}
-        >
-          <option value="none">{t.groupNone}</option>
-          <option value="family">{t.groupFamily}</option>
-          <option value="genus">{t.groupGenus}</option>
-        </select>
+        <div className="legend-name-toggle">
+          <label htmlFor={`${idPrefix}NameType`}>{t.nameType}</label>
+          <select
+            id={`${idPrefix}NameType`}
+            value={legendNameType}
+            onChange={(e) => setLegendNameType(e.target.value as LegendNameType)}
+            aria-label={t.nameType}
+          >
+            <option value="short">{t.nameShort}</option>
+            <option value="full">{t.nameFull}</option>
+            <option value="chinese">{t.nameChinese}</option>
+          </select>
+        </div>
       </div>
 
       <div className="legend-select-actions">
@@ -201,6 +194,12 @@ export default function SpeciesLegend({ idPrefix }: { idPrefix: string }) {
                     }
                   }}
                 >
+                  {groupBy === 'family' && (
+                    <span
+                      className="species-color circle legend-group-swatch"
+                      style={{ background: species.familyColors[g.key] }}
+                    />
+                  )}
                   <span className={g.scientific ? 'scientific-name' : undefined}>
                     {g.label}
                   </span>{' '}

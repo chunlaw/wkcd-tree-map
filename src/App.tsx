@@ -5,6 +5,8 @@ import { translations } from './i18n'
 import { mapController } from './lib/mapController'
 import MapView from './components/MapView'
 import TopLeftControls from './components/TopLeftControls'
+import MapControls from './components/MapControls'
+import BrandBadge from './components/BrandBadge'
 import ControlPanel from './components/ControlPanel'
 import WeatherWidget from './components/WeatherWidget'
 import MeasurementEditor from './components/MeasurementEditor'
@@ -32,6 +34,8 @@ export default function App() {
     <>
       <MapView />
       <TopLeftControls />
+      <MapControls />
+      <BrandBadge />
       <ControlPanel />
       <WeatherWidget />
       <MeasurementEditor />

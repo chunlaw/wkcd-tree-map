@@ -25,37 +25,43 @@ export default function ControlPanel() {
   // Container stays mounted (so it can slide); inner content renders only when
   // open so heavy tabs (e.g. Photos gallery) don't load while hidden.
   return (
-    <div className={`main-panel${panelOpen ? ' open' : ''}`} aria-hidden={!panelOpen}>
-      {panelOpen && (
-        <div className="panel-content">
-        <div className="tabs">
-          {tabs.map((tab) => (
-            <button
-              key={tab.name}
-              className={`tab ${activeTab === tab.name ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.name)}
-              aria-label={tab.label}
-            >
-              <i className={`fas ${tab.icon}`} /> {tab.label}
-            </button>
-          ))}
-          <button
-            className="tab tab-close"
-            onClick={togglePanel}
-            aria-label={t.closeLabel}
-            title={t.closeLabel}
-          >
-            <i className="fas fa-xmark" />
-          </button>
-        </div>
+    <>
+      {panelOpen && <div className="drawer-backdrop" onClick={togglePanel} />}
+      <div
+        className={`main-panel${panelOpen ? ' open' : ''}`}
+        aria-hidden={!panelOpen}
+      >
+        {panelOpen && (
+          <div className="panel-content">
+            <div className="tabs">
+              <button
+                className="tab-back"
+                onClick={togglePanel}
+                aria-label={t.closeLabel}
+                title={t.closeLabel}
+              >
+                <i className="fas fa-arrow-left" />
+              </button>
+              {tabs.map((tab) => (
+                <button
+                  key={tab.name}
+                  className={`tab ${activeTab === tab.name ? 'active' : ''}`}
+                  onClick={() => setActiveTab(tab.name)}
+                  aria-label={tab.label}
+                >
+                  <i className={`fas ${tab.icon}`} /> {tab.label}
+                </button>
+              ))}
+            </div>
 
-          {activeTab === 'filters' && <FiltersTab />}
-          {activeTab === 'search' && <SearchTab />}
-          {activeTab === 'photos' && <PhotosTab />}
-          {activeTab === 'stats' && <StatsTab />}
-          {activeTab === 'tools' && <ToolsTab />}
-        </div>
-      )}
-    </div>
+            {activeTab === 'filters' && <FiltersTab />}
+            {activeTab === 'search' && <SearchTab />}
+            {activeTab === 'photos' && <PhotosTab />}
+            {activeTab === 'stats' && <StatsTab />}
+            {activeTab === 'tools' && <ToolsTab />}
+          </div>
+        )}
+      </div>
+    </>
   )
 }

@@ -1,4 +1,22 @@
 import type { MarkerShape, TreeFeature } from '../types'
+import { getFamily } from '../data/families'
+
+/** Curated qualitative palette for the most common families (colour-by-family).
+ *  Chosen to be distinct and to contrast with the green satellite basemap. */
+const FAMILY_PALETTE = [
+  '#1f77b4', // blue
+  '#ff7f0e', // orange
+  '#9467bd', // purple
+  '#d62728', // red
+  '#17becf', // cyan
+  '#e377c2', // pink
+  '#bcbd22', // olive
+  '#8c564b', // brown
+  '#f4c20d', // gold
+  '#2ca02c', // green
+]
+/** Fallback colour for families outside the top-N ("Other"). */
+export const OTHER_FAMILY_COLOR = '#9e9e9e'
 
 /** Generate a diverse, evenly-spread HSL color palette (ported from original). */
 export function generateColorPalette(count: number): string[] {
@@ -51,11 +69,11 @@ export interface SpeciesMaps {
   chineseNames: Record<string, string>
   /** Botanical name -> number of trees of that species */
   counts: Record<string, number>
+  /** Botanical family -> colour (top families coloured, rest grey) */
+  familyColors: Record<string, string>
   /** Distinct botanical names in insertion order */
   order: string[]
 }
-
-const SHAPES: MarkerShape[] = ['circle', 'square', 'triangle']
 
 /** Build color/shape/chinese-name maps for all species in the dataset. */
 export function processSpecies(trees: TreeFeature[]): SpeciesMaps {
@@ -76,15 +94,29 @@ export function processSpecies(trees: TreeFeature[]): SpeciesMaps {
     }
   }
 
-  const palette = generateColorPalette(order.length)
+  // Colour by botanical family: rank families by tree count, give the top ones
+  // the curated palette and everything else a neutral grey.
+  const familyTreeCount: Record<string, number> = {}
+  for (const name of order) {
+    const fam = getFamily(name)
+    familyTreeCount[fam] = (familyTreeCount[fam] ?? 0) + counts[name]
+  }
+  const familyColors: Record<string, string> = {}
+  Object.keys(familyTreeCount)
+    .sort((a, b) => familyTreeCount[b] - familyTreeCount[a])
+    .forEach((fam, i) => {
+      familyColors[fam] =
+        i < FAMILY_PALETTE.length ? FAMILY_PALETTE[i] : OTHER_FAMILY_COLOR
+    })
+
   const colors: Record<string, string> = {}
   const shapes: Record<string, MarkerShape> = {}
-  order.forEach((name, i) => {
-    colors[name] = palette[i]
-    shapes[name] = SHAPES[i % SHAPES.length]
-  })
+  for (const name of order) {
+    colors[name] = familyColors[getFamily(name)] ?? OTHER_FAMILY_COLOR
+    shapes[name] = 'circle'
+  }
 
-  return { colors, shapes, chineseNames, counts, order }
+  return { colors, shapes, chineseNames, counts, familyColors, order }
 }
 
 /** Abbreviated scientific name, e.g. "Ficus microcarpa" -> "Fic. mic." */

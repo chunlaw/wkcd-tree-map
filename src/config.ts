@@ -51,3 +51,7 @@ export const BRAND_GREEN = '#2c5f2d'
 // against satellite imagery of a coastal park (green vegetation, blue water,
 // grey urban) — unlike green or cyan, it never blends into the basemap.
 export const MEASURE_COLOR = '#ff2d95'
+
+// Viewpoint field-of-view cone colour. Warm amber-orange stands out over both
+// the green land and the blue harbour water (the old brand green blended in).
+export const VIEWSHED_COLOR = '#ff8c00'

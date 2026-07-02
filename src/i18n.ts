@@ -91,7 +91,7 @@ export interface Translation {
   streetMap: string
   satellite: string
   topographic: string
-  fitAllTrees: string
+  resetView: string
   myLocation: string
   switchLanguage: string
 
@@ -199,7 +199,7 @@ const en: Translation = {
   streetMap: 'Street Map',
   satellite: 'Satellite',
   topographic: 'Topographic',
-  fitAllTrees: 'Fit all trees',
+  resetView: 'Reset view',
   myLocation: 'My location',
   switchLanguage: 'Switch language / 切換語言',
 
@@ -304,7 +304,7 @@ const zh: Translation = {
   streetMap: '街道圖',
   satellite: '衛星圖',
   topographic: '地形圖',
-  fitAllTrees: '顯示所有樹木',
+  resetView: '重設檢視',
   myLocation: '我的位置',
   switchLanguage: 'Switch language / 切換語言',
 

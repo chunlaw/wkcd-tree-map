@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { useStore } from '../store'
 import { useT } from '../useT'
 import type { LabelType } from '../types'
 
-/** Map display toggles: markers, viewpoints, clustering, labels. */
+/** Map display toggles: markers, viewpoints, clustering, labels. Collapsible. */
 export default function DisplayOptions() {
   const t = useT()
+  const [open, setOpen] = useState(false)
   const showTrees = useStore((s) => s.showTrees)
   const showViewpoints = useStore((s) => s.showViewpoints)
   const clustering = useStore((s) => s.clustering)
@@ -19,7 +21,24 @@ export default function DisplayOptions() {
 
   return (
     <div className="filter-section">
-      <h4>{t.displayOptions}</h4>
+      <h4
+        className="collapsible-header"
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setOpen((o) => !o)
+          }
+        }}
+      >
+        {t.displayOptions}
+        <i className={`fas ${open ? 'fa-chevron-up' : 'fa-chevron-down'}`} />
+      </h4>
+      {open && (
+        <>
       <div className="filter-option">
         <input
           type="checkbox"
@@ -69,6 +88,8 @@ export default function DisplayOptions() {
           </select>
         </label>
       </div>
+        </>
+      )}
     </div>
   )
 }
