@@ -32,7 +32,7 @@ export default function TopLeftControls() {
       </button>
 
       <a
-        href="https://benjaminficusmicrocarpa.github.io/"
+        href="https://chunlaw.github.io/"
         className="toggle-btn"
         style={{ textDecoration: 'none' }}
         aria-label={t.backToHome}
