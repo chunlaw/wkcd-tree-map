@@ -15,17 +15,13 @@ export default function LegendPanel() {
   return (
     <div className="side-panel">
       <div className="weather-content">
-        <h4>
-          <i className="fas fa-cloud-sun" /> {t.weather}
-        </h4>
-        <div className="weather-info">
-          <div className="weather-temp">24°C</div>
-          <div className="weather-desc">
-            {t.partlyCloudy}
-            <br />
-            {t.humidity}: 65%
-          </div>
-        </div>
+        <i className="fas fa-cloud-sun" />
+        <span>24°C</span>
+        <span className="weather-sep">·</span>
+        <span>{t.partlyCloudy}</span>
+        <span className="weather-sep">·</span>
+        <i className="fas fa-droplet" />
+        <span>65%</span>
       </div>
 
       <div

@@ -41,6 +41,10 @@ export const MAP_INITIAL_CENTER: [number, number] = [22.2998, 114.157]
 export const MAP_INITIAL_ZOOM = 18
 export const MAP_MAX_ZOOM = 25
 export const MAP_MIN_ZOOM = 10
+/** Photo viewpoints are only shown at/above this zoom (perf + decluttering).
+ *  The WKCD data is dense, so this is set fairly high (above the default zoom
+ *  of 18) — viewpoints appear once you zoom into a specific area. */
+export const VIEWPOINT_MIN_ZOOM = 19
 export const BRAND_GREEN = '#2c5f2d'
 
 // Default colour for drawn measurements. Vivid magenta has strong contrast

@@ -81,6 +81,8 @@ export interface Translation {
   humidity: string
 
   // controls
+  menu: string
+  closeLabel: string
   backToHome: string
   zoomIn: string
   zoomOut: string
@@ -187,6 +189,8 @@ const en: Translation = {
   partlyCloudy: 'Partly Cloudy',
   humidity: 'Humidity',
 
+  menu: 'Menu',
+  closeLabel: 'Close',
   backToHome: 'Back to home',
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
@@ -290,6 +294,8 @@ const zh: Translation = {
   partlyCloudy: '部分多雲',
   humidity: '濕度',
 
+  menu: '選單',
+  closeLabel: '關閉',
   backToHome: '返回主頁',
   zoomIn: '放大',
   zoomOut: '縮小',

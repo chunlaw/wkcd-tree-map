@@ -92,8 +92,11 @@ export const useStore = create<AppState>((set, get) => ({
   dataLoaded: false,
   loadError: null,
 
-  activeTab: 'search',
-  panelOpen: true,
+  activeTab: 'filters',
+  // Panel open by default on desktop, hidden on mobile (opened via the menu button).
+  panelOpen:
+    typeof window === 'undefined' ||
+    !window.matchMedia('(max-width: 768px)').matches,
 
   showTrees: true,
   showViewpoints: true,

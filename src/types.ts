@@ -43,7 +43,7 @@ export interface FeatureCollection<F> {
 }
 
 export type GroupBy = 'none' | 'family' | 'genus'
-export type TabName = 'search' | 'photos' | 'stats' | 'tools'
+export type TabName = 'filters' | 'search' | 'photos' | 'stats' | 'tools'
 export type BaseMapKey = 'osm' | 'satellite' | 'topo'
 export type LabelType = 'short' | 'chinese'
 export type LegendNameType = 'short' | 'full' | 'chinese'

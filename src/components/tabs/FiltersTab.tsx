@@ -1,5 +1,12 @@
-// Deprecated: the Filters tab has been merged into the top-right panel
-// (DisplayOptions + SpeciesLegend inside LegendPanel).
+import DisplayOptions from '../DisplayOptions'
+import SpeciesLegend from '../SpeciesLegend'
+
+/** Drawer tab: display toggles, legend + species filtering. */
 export default function FiltersTab() {
-  return null
+  return (
+    <div className="tab-content">
+      <DisplayOptions />
+      <SpeciesLegend idPrefix="legend" />
+    </div>
+  )
 }

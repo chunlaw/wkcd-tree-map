@@ -12,6 +12,8 @@ export default function TopLeftControls() {
   const trees = useStore((s) => s.trees)
   const lang = useStore((s) => s.lang)
   const toggleLang = useStore((s) => s.toggleLang)
+  const panelOpen = useStore((s) => s.panelOpen)
+  const togglePanel = useStore((s) => s.togglePanel)
 
   const baseMaps: { value: BaseMapKey; label: string }[] = [
     { value: 'osm', label: t.streetMap },
@@ -20,7 +22,17 @@ export default function TopLeftControls() {
   ]
 
   return (
-    <div className="top-left-controls">
+    <div className={`top-left-controls${panelOpen ? ' shifted' : ''}`}>
+      <button
+        className={`toggle-btn${panelOpen ? ' toggle-btn-active' : ''}`}
+        onClick={togglePanel}
+        aria-label={t.menu}
+        title={t.menu}
+        aria-expanded={panelOpen}
+      >
+        <i className="fas fa-bars" />
+      </button>
+
       <button
         className="toggle-btn"
         onClick={toggleLang}

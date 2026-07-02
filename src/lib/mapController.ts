@@ -8,7 +8,13 @@ import type {
   TreeFeature,
   ViewpointFeature,
 } from '../types'
-import { BRAND_GREEN, MAP_MAX_ZOOM, MAP_MIN_ZOOM, MEASURE_COLOR } from '../config'
+import {
+  BRAND_GREEN,
+  MAP_MAX_ZOOM,
+  MAP_MIN_ZOOM,
+  MEASURE_COLOR,
+  VIEWPOINT_MIN_ZOOM,
+} from '../config'
 import { translations, type Translation } from '../i18n'
 import { getShortScientificName, markerShapeHtml } from './species'
 import { formatCoord, polylineDistance, viewshedPolygonPoints } from './geo'
@@ -48,6 +54,7 @@ class MapController {
   private plainGroup: L.LayerGroup = L.layerGroup()
   private viewpointGroup: L.LayerGroup = L.layerGroup()
   private viewpointMarkers: L.Marker[] = []
+  private showViewpointsPref = true
   private drawnItems: L.FeatureGroup = L.featureGroup()
   private drawnStack: L.Layer[] = []
   private measurementText = new WeakMap<L.Layer, string>()
@@ -140,6 +147,9 @@ class MapController {
         this.onViewChange(map.getCenter(), map.getZoom())
       }, 500)
     })
+
+    // Show/hide viewpoints as the zoom crosses the threshold.
+    map.on('zoomend', () => this.updateViewpointVisibility())
   }
 
   destroy(): void {
@@ -224,7 +234,10 @@ class MapController {
       const props = feature.properties
       const icon = L.divIcon({
         className: 'viewpoint-marker',
-        html: `<div style="transform: rotate(${props.rotation}deg);"><i class="fas fa-eye" style="color:#4a90e2;font-size:18px;filter:drop-shadow(0 0 2px white);"></i></div>`,
+        // Use text-shadow (cheap) instead of filter: drop-shadow — a CSS filter
+        // creates a GPU compositing layer per marker, and repainting all ~116
+        // viewpoints each pan/zoom frame is a major mobile bottleneck.
+        html: `<div style="transform: rotate(${props.rotation}deg);"><i class="fas fa-eye" style="color:#4a90e2;font-size:18px;text-shadow:0 0 2px #fff,0 0 3px #fff;"></i></div>`,
         iconSize: [18, 18],
       })
       const marker = L.marker([lat, lng], { icon })
@@ -241,13 +254,16 @@ class MapController {
     if (!this.map) return
     const marker = this.viewpointMarkers[index]
     if (!marker) return
+    const latlng = marker.getLatLng()
+    // Zoom in past the threshold if needed, otherwise just pan if off-screen.
+    if (this.map.getZoom() < VIEWPOINT_MIN_ZOOM) {
+      this.map.setView(latlng, VIEWPOINT_MIN_ZOOM)
+    } else if (!this.map.getBounds().contains(latlng)) {
+      this.map.panTo(latlng)
+    }
     // Ensure viewpoints are on the map so the popup can open.
     if (!this.map.hasLayer(this.viewpointGroup)) {
       this.map.addLayer(this.viewpointGroup)
-    }
-    const latlng = marker.getLatLng()
-    if (!this.map.getBounds().contains(latlng)) {
-      this.map.panTo(latlng)
     }
     marker.openPopup()
   }
@@ -362,9 +378,18 @@ class MapController {
   }
 
   toggleViewpoints(show: boolean): void {
+    this.showViewpointsPref = show
+    this.updateViewpointVisibility()
+  }
+
+  /** Viewpoints show only when enabled AND zoomed in past the threshold. */
+  private updateViewpointVisibility(): void {
     if (!this.map) return
-    if (show) this.map.addLayer(this.viewpointGroup)
-    else this.map.removeLayer(this.viewpointGroup)
+    const shouldShow =
+      this.showViewpointsPref && this.map.getZoom() >= VIEWPOINT_MIN_ZOOM
+    const has = this.map.hasLayer(this.viewpointGroup)
+    if (shouldShow && !has) this.map.addLayer(this.viewpointGroup)
+    else if (!shouldShow && has) this.map.removeLayer(this.viewpointGroup)
   }
 
   updateLabels(enabled: boolean, type: LabelType): void {

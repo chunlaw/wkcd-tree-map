@@ -6,7 +6,7 @@ import { mapController } from './lib/mapController'
 import MapView from './components/MapView'
 import TopLeftControls from './components/TopLeftControls'
 import ControlPanel from './components/ControlPanel'
-import LegendPanel from './components/LegendPanel'
+import WeatherWidget from './components/WeatherWidget'
 import MeasurementEditor from './components/MeasurementEditor'
 import PhotoModal from './components/PhotoModal'
 
@@ -33,7 +33,7 @@ export default function App() {
       <MapView />
       <TopLeftControls />
       <ControlPanel />
-      <LegendPanel />
+      <WeatherWidget />
       <MeasurementEditor />
       <div className="coordinate-display" id="coordinateDisplay" />
       <PhotoModal />
