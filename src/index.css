@@ -1050,6 +1050,39 @@ body {
   stroke-width: 2;
 }
 
+/* Tree-themed cluster palette: tan -> sienna -> bark brown as the count grows.
+   Warm earth tones read as "wood/soil" and contrast with the green satellite
+   basemap (unlike plain green), while avoiding the default heatmap red. */
+.marker-cluster-small {
+  background-color: rgba(201, 165, 110, 0.5);
+}
+.marker-cluster-small div {
+  background-color: rgba(156, 116, 62, 0.9);
+}
+
+.marker-cluster-medium {
+  background-color: rgba(168, 112, 56, 0.5);
+}
+.marker-cluster-medium div {
+  background-color: rgba(138, 82, 38, 0.9);
+}
+
+.marker-cluster-large {
+  background-color: rgba(120, 74, 40, 0.5);
+}
+.marker-cluster-large div {
+  background-color: rgba(92, 54, 26, 0.92);
+}
+
+.marker-cluster div {
+  color: #fff;
+  font-weight: 600;
+}
+
+.marker-cluster span {
+  line-height: 30px;
+}
+
 /* Clusters with no search match are dimmed. */
 .marker-cluster-dim {
   opacity: 0.25;
